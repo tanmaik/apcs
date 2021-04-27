@@ -1,0 +1,5 @@
+Customer		Total		Longest		Average Wait
+Senior			0			0			NaN
+Junior			0			0			NaN
+Sophomore			0			0			NaN
+Freshman			0			0			NaN
