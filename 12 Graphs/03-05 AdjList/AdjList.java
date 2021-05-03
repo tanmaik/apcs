@@ -38,10 +38,10 @@ class Vertex implements VertexInterface {
       int count = 0;
       for (Vertex v : adjacencies) {
          adj += v.getName() + " ";
-         count ++;
+         count++;
       }
       if (count != 0)
-         adj = adj.substring(0, adj.length()-1);
+         adj = adj.substring(0, adj.length() - 1);
       adj += "]";
       return toReturn + adj;
    }
@@ -162,6 +162,81 @@ public class AdjList implements AdjListInterface// , DFS_BFS , EdgeListWithCitie
       }
       return toReturn;
    }
+
+   public List<Vertex> depthFirstSearch(String name) {
+      Vertex v = vertices.get(nameToIndex.get(name));
+      List<Vertex> reachables = new ArrayList<Vertex>();
+      Stack<Vertex> holder = new Stack<Vertex>();
+      holder.push(v);
+      while (!holder.empty()) {  
+         Vertex temp = holder.pop();
+         if (!reachables.contains(temp)) {
+            reachables.add(temp);
+            for (Vertex edge : temp.getAdjacencies()) {
+               if (!holder.contains(edge)) {
+                  holder.push(edge);
+               }
+            }
+         }
+      }
+      return reachables;
+   }
+
+   public List<Vertex> depthFirstSearch(Vertex v) {
+      List<Vertex> reachables = new ArrayList<Vertex>();
+      Stack<Vertex> holder = new Stack<Vertex>();
+      holder.push(v);
+      while (!holder.empty()) {  
+         Vertex temp = holder.pop();
+         if (!reachables.contains(temp)) {
+            reachables.add(temp);
+            for (Vertex edge : temp.getAdjacencies()) {
+               if (!holder.contains(edge)) {
+                  holder.push(edge);
+               }
+            }
+         }
+      }
+      return reachables;
+   }
+
+   public List<Vertex> breadthFirstSearch(String name) {
+      Vertex v = vertices.get(nameToIndex.get(name));
+      List<Vertex> reachables = new ArrayList<Vertex>();
+      Queue<Vertex> holder = new LinkedList<Vertex>();
+      holder.add(v);
+      while (!holder.isEmpty()) {  
+         Vertex temp = holder.remove();
+         if (!reachables.contains(temp)) {
+            reachables.add(temp);
+            for (Vertex edge : temp.getAdjacencies()) {
+               if (!holder.contains(edge)) {
+                  holder.add(edge);
+               }
+            }
+         }
+      }
+      return reachables;
+   }
+
+   public List<Vertex> breadthFirstSearch(Vertex v) {
+      List<Vertex> reachables = new ArrayList<Vertex>();
+      Queue<Vertex> holder = new LinkedList<Vertex>();
+      holder.add(v);
+      while (!holder.isEmpty()) {  
+         Vertex temp = holder.remove();
+         if (!reachables.contains(temp)) {
+            reachables.add(temp);
+            for (Vertex edge : temp.getAdjacencies()) {
+               if (!holder.contains(edge)) {
+                  holder.add(edge);
+               }
+            }
+         }
+      }
+      return reachables;
+   }
+
 
    /* three extra credit methods, recursive version */
    List<Vertex> depthFirstRecur(String name) {
