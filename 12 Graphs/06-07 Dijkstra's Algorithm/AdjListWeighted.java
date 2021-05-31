@@ -43,7 +43,7 @@ class wVertex implements Comparable<wVertex>, wVertexInterface
    /*  enter your code for this class here   */ 
    public wVertex (String argName) {
       this.name = argName;
-      adjacencies = new ArrayList<>();
+      adjacencies = new ArrayList<Edge>();
    }
    public String getName() {
       return name;
@@ -51,10 +51,10 @@ class wVertex implements Comparable<wVertex>, wVertexInterface
    public double getMinDistance() {
       return minDistance;
    }
-   public void setMinDistance(int newMinDistance) {
+   public void setMinDistance(double newMinDistance) {
       minDistance = newMinDistance;
    }
-   public List<> getAdjacencies() {
+   public ArrayList<Edge> getAdjacencies() {
       return adjacencies;
    }
    public void addEdge(wVertex v, double weight) {
@@ -99,6 +99,9 @@ public class AdjListWeighted implements AdjListWeightedInterface //,AdjListWeigh
    public wVertex getVertex(int i) {
       return vertices.get(i);
    }
+   public Map<String, Integer> getNameToIndex() {
+      return nameToIndex;
+   }
    public wVertex getVertex(String vertexName) {
       return vertices.get(nameToIndex.get(vertexName));
    }
@@ -106,13 +109,17 @@ public class AdjListWeighted implements AdjListWeightedInterface //,AdjListWeigh
       vertices.add(new wVertex(v));
    }
    public void addEdge(String source, String target, double weight) {
+      // boolean exists = false;
+      // for (wVertex v : vertices) {
+      //    if (v.getName().equals(target))
+      // }
       vertices.get(nameToIndex.get(source)).addEdge(vertices.get(nameToIndex.get(target)), weight);
    }
    public void minimumWeightPath(String vertexName) {
       minimumWeightPath(vertices.get(nameToIndex.get(vertexName)));
    }
    public void minimumWeightPath(wVertex source) {
-      source.setMinDistance(0.0);
+      source.setMinDistance(0);
       PriorityQueue<wVertex> pq = new PriorityQueue<>();
       pq.add(source);
       while (!pq.isEmpty()) {
