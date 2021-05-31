@@ -115,7 +115,7 @@ public class AdjList implements AdjListInterface// , DFS_BFS , EdgeListWithCitie
    private ArrayList<Vertex> vertices = new ArrayList<Vertex>();
    private Map<String, Integer> nameToIndex = new TreeMap<String, Integer>();
    private int last = vertices.size() - 1;
-
+   
    public List<Vertex> getVertices() {
       return vertices;
    }
@@ -209,6 +209,65 @@ public class AdjList implements AdjListInterface// , DFS_BFS , EdgeListWithCitie
       return reachables;
    }
 
+   public void graphFromEdgeListData(String fileName) throws FileNotFoundException {
+      File f = new File(fileName);
+      Scanner scan = new Scanner(f);
+      while (scan.hasNextLine()) {
+         String[] vert = scan.nextLine().split(" ");
+         if (!nameToIndex.containsKey(vert[0])) {
+            addVertex(vert[0]);
+         }
+         if (!nameToIndex.containsKey(vert[1])) {
+            addVertex(vert[1]);
+         }
+         addEdge(vert[0], vert[1]);
+      }
+      scan.close();
+   }
+
+   public int edgeCount() {
+      int count = 0;
+      for (Vertex v : vertices) {
+         for (Vertex vert : v.getAdjacencies()) {
+            count ++;
+         }
+      }
+      return count;
+   }
+
+   public int vertexCount() {
+      int count = 0;
+      for (String key : nameToIndex.keySet()) {
+         count ++;
+      }
+      return count;
+   }
+
+   public boolean isReachable(String source, String target) {
+      List<Vertex> reachables = depthFirstSearch(source);
+      for (Vertex v : reachables) {
+         if (v.getName().equals(target)) {
+            return true;
+         }
+      }
+      return false;
+   }
+
+   public boolean isConnected() {
+      Set<String> verts = nameToIndex.keySet();
+      for (Vertex v : vertices) {
+         for (Vertex vert : v.getAdjacencies()) {
+            if (verts.contains(vert.getName())) {
+               verts.remove(vert.getName());
+            }
+         }
+      }
+      if (verts.isEmpty()) {
+         return true;
+      }
+      return false;
+   }
+
 
    /* three extra credit methods, recursive version */
    List<Vertex> depthFirstRecur(String name) {
@@ -222,4 +281,6 @@ public class AdjList implements AdjListInterface// , DFS_BFS , EdgeListWithCitie
    void depthFirstRecurHelper(Vertex v, ArrayList<Vertex> reachable) {
 
    }
+
+   
 }
