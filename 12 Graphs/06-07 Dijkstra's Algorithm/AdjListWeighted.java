@@ -41,7 +41,28 @@ class wVertex implements Comparable<wVertex>, wVertexInterface
    //private wVertex previous;  //for building the actual path in Dijkstra 7
    
    /*  enter your code for this class here   */ 
-    
+   public wVertex (String argName) {
+      this.name = argName;
+      adjacencies = new ArrayList<>();
+   }
+   public String getName() {
+      return name;
+   }
+   public double getMinDistance() {
+      return minDistance;
+   }
+   public void setMinDistance(int newMinDistance) {
+      minDistance = newMinDistance;
+   }
+   public List<> getAdjacencies() {
+      return adjacencies;
+   }
+   public void addEdge(wVertex v, double weight) {
+      adjacencies.add(new Edge(v, weight));
+   }
+   public int compareTo(wVertex other) {
+      return (int) (minDistance - other.minDistance);
+   }
 }
 
 interface AdjListWeightedInterface 
@@ -72,10 +93,39 @@ public class AdjListWeighted implements AdjListWeightedInterface //,AdjListWeigh
    //the constructor is a no-arg constructor 
   
    /*  enter your code for Graphs 6 */ 
-   
-   
-   
-   
+   public List<wVertex> getVertices() {
+      return vertices;
+   }
+   public wVertex getVertex(int i) {
+      return vertices.get(i);
+   }
+   public wVertex getVertex(String vertexName) {
+      return vertices.get(nameToIndex.get(vertexName));
+   }
+   public void addVertex(String v) {
+      vertices.add(new wVertex(v));
+   }
+   public void addEdge(String source, String target, double weight) {
+      vertices.get(nameToIndex.get(source)).addEdge(vertices.get(nameToIndex.get(target)), weight);
+   }
+   public void minimumWeightPath(String vertexName) {
+      minimumWeightPath(vertices.get(nameToIndex.get(vertexName)));
+   }
+   public void minimumWeightPath(wVertex source) {
+      source.setMinDistance(0.0);
+      PriorityQueue<wVertex> pq = new PriorityQueue<>();
+      pq.add(source);
+      while (!pq.isEmpty()) {
+         wVertex current = pq.remove();
+         for (Edge neighbor : current.getAdjacencies()) {
+            if (neighbor.weight + current.getMinDistance() < neighbor.target.getMinDistance()) {
+               pq.remove(neighbor.target);
+               neighbor.target.setMinDistance(neighbor.weight + current.getMinDistance());
+               pq.add(neighbor.target);
+            }
+         }
+      }
+   }
    /*  enter your code for two new methods in Graphs 7 */
    
    
