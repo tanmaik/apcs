@@ -151,6 +151,9 @@ public class AdjListWeighted implements AdjListWeightedInterface // ,AdjListWeig
    }
 
    public void minimumWeightPath(wVertex source) {
+      for (wVertex v : vertices) {
+         v.setMinDistance(Double.POSITIVE_INFINITY);
+      }
       source.setMinDistance(0);
       PriorityQueue<wVertex> pq = new PriorityQueue<>();
       pq.add(source);
